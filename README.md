@@ -6,7 +6,7 @@ Overview
 - The plugin also supports "Actionable" capabilities which require a matching runtime CapabilityHandler implementation.
 
 Usage
-- Install into `res://addons/augusts_item_system` and enable the plugin via Project > Project Settings > Plugins. See [`plugin.gd`](plugin.gd) and [`plugin.cfg`](plugin.cfg).
+- Install into `res://addons/` and enable the plugin via Project > Project Settings > Plugins. See [`plugin.gd`](plugin.gd) and [`plugin.cfg`](plugin.cfg).
 - Configure project settings (Project > Project Settings):
   - `augusts_item_system/database/source_directory`
   - `augusts_item_system/database/catalogue_save_path`
