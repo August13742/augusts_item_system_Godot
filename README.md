@@ -1,6 +1,6 @@
-# August's Item System
+# August's Item System (Requires Godot 4.5+ due to use of Absract Class)
 
-A capability-based item composition system for Godot with editor tooling.
+A capability-based item composition system for Godot with editor tooling. You can delete the @abstract from `item_capability.gd` to use this in 4.5- 
 
 ## Overview
 
