@@ -2,9 +2,10 @@
 extends EditorPlugin
 
 
-const ITEM_DATABASE_SINGLETON_NAME = "ItemDatabase"
-const ADDON_BASE_PATH = "res://addons/augusts_item_system"
-const ITEM_DATABASE_SCRIPT_PATH = ADDON_BASE_PATH+"/item_database.gd"
+const ITEM_DATABASE_SINGLETON_NAME := "ItemDatabase"
+const ICON_PATH := "res://addons/augusts_item_system/icons"
+const ADDON_BASE_PATH := "res://addons/augusts_item_system/src"
+const ITEM_DATABASE_SCRIPT_PATH := ADDON_BASE_PATH+"/item_database.gd"
 
 # Define paths for the new project settings
 const SOURCE_DIR_SETTING = "augusts_item_system/database/source_directory"
@@ -23,10 +24,10 @@ func _enter_tree():
 	# --- Register Custom Types ---
 	add_custom_type("ItemResource", "Resource",
 	preload(ADDON_BASE_PATH+"/item_resource.gd"),
-	preload(ADDON_BASE_PATH+"/icons/icon_parchment.png"))
+	preload(ICON_PATH+"/icon_parchment.png"))
 	add_custom_type("ItemCapability", "Resource",
 	preload(ADDON_BASE_PATH+"/item_capability.gd"),
-	preload(ADDON_BASE_PATH+"/icons/icon_gear.png")
+	preload(ICON_PATH+"/icon_gear.png")
 	)
 
 	add_tool_menu_item("Item System/Rebuild Catalogue", _on_rebuild)
