@@ -1,6 +1,6 @@
 class_name ItemInstance
 '''
-represents items in a player's inventory, holds mutable state
+represents items in an inventory, holds mutable state
 '''
 extends RefCounted
 
