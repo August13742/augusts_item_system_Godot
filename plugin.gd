@@ -29,6 +29,14 @@ func _enter_tree():
 	preload(ADDON_BASE_PATH+"/item_capability.gd"),
 	preload(ICON_PATH+"/icon_gear.png")
 	)
+	
+	add_custom_type("LootDrop", "Resource",
+	preload(ADDON_BASE_PATH+"/LootSystem/LootDrop.gd"),
+	preload(ICON_PATH+"/icon_chest.png"))
+	add_custom_type("LootTable", "Resource",
+	preload(ADDON_BASE_PATH+"/LootSystem/LootTable.gd"),
+	preload(ICON_PATH+"/icon_dice.png"))
+	
 
 	add_tool_menu_item("Item System/Rebuild Catalogue", _on_rebuild)
 
@@ -38,6 +46,10 @@ func _exit_tree():
 	remove_autoload_singleton(ITEM_DATABASE_SINGLETON_NAME)
 	remove_custom_type("ItemResource")
 	remove_custom_type("ItemCapability")
+	
+	remove_custom_type("LootDrop")
+	remove_custom_type("LootTable")
+	
 	remove_tool_menu_item("Item System/Rebuild Catalogue")
 	# Note: Project settings are not removed automatically. This is standard Godot behavior.
 

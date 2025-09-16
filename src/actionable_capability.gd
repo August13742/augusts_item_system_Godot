@@ -1,5 +1,4 @@
-extends ItemCapability
-class_name ActionableCapability
+@abstract class_name ActionableCapability extends ItemCapability
 
 # This class is intentionally blank.
 # Any capability that requires a handler to execute its logic should inherit
