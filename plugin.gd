@@ -10,14 +10,14 @@ const ITEM_DATABASE_SCRIPT_PATH := ADDON_BASE_PATH+"/item_database.gd"
 # Define paths for the new project settings
 const SOURCE_DIR_SETTING = "augusts_item_system/database/source_directory"
 const SAVE_PATH_SETTING = "augusts_item_system/database/catalogue_save_path"
-
+const HANDLERS_DIR_SETTING = "augusts_item_system/database/handlers_directory"
 
 func _enter_tree():
 	# --- Create Project Settings ---
 	# This makes the plugin configurable from the Project > Project Settings menu.
 	_define_project_setting(SOURCE_DIR_SETTING, "res://Items/Resources", TYPE_STRING, PROPERTY_HINT_DIR)
 	_define_project_setting(SAVE_PATH_SETTING, "res://Items/_Generated/item_catalogue.tres", TYPE_STRING, PROPERTY_HINT_FILE, "*.tres")
-
+	_define_project_setting(HANDLERS_DIR_SETTING, "res://Items/Handlers", TYPE_STRING, PROPERTY_HINT_DIR)
 	# --- Register Singleton ---
 	add_autoload_singleton(ITEM_DATABASE_SINGLETON_NAME, ITEM_DATABASE_SCRIPT_PATH)
 

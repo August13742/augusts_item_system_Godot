@@ -19,6 +19,7 @@ const HANDLERS_DIR_SETTING = "augusts_item_system/database/handlers_directory"
 # --- Indexed Databases ---
 var items_by_id := {}
 var capabilities_by_type := {}
+var all_capabilities_by_id :={}
 var handler_registry := {}
 
 func _enter_tree():
@@ -28,9 +29,9 @@ func _enter_tree():
 
 
 func _load_configuration():
-	source_directory = ProjectSettings.get_setting(SOURCE_DIR_SETTING, "res://items/resources")
-	catalogue_save_path = ProjectSettings.get_setting(SAVE_PATH_SETTING, "res://items/generated/item_catalogue.tres")
-	handlers_directory = ProjectSettings.get_setting(HANDLERS_DIR_SETTING, "res://items/handlers")
+	source_directory = ProjectSettings.get_setting(SOURCE_DIR_SETTING, "res://Items/Resources")
+	catalogue_save_path = ProjectSettings.get_setting(SAVE_PATH_SETTING, "res://Items/generated/item_catalogue.tres")
+	handlers_directory = ProjectSettings.get_setting(HANDLERS_DIR_SETTING, "res://Items/Handlers")
 
 #region Database Auto-Construction
 func _build_and_validate():
@@ -64,7 +65,7 @@ func _register_handlers_automatically():
 
 		var capability_name = handler_name.replace("Handler", "Capability")
 
-		var capability_script_path = "res://addons/augusts_item_system/capabilities/%s.gd" % capability_name.to_snake_case()
+		var capability_script_path = "res://Items/ItemCapabilities/%s.gd" % capability_name
 
 		var capability_script = load(capability_script_path)
 		if not capability_script:
@@ -122,7 +123,9 @@ func _build_databases():
 	print("[ItemDatabase] Starting database build from: %s" % source_directory)
 	items_by_id.clear()
 	capabilities_by_type.clear()
-
+	all_capabilities_by_id.clear()
+	
+	
 	var all_item_resources: Array[ItemResource] = []
 	_scan_for_resources(source_directory, all_item_resources)
 
@@ -144,11 +147,15 @@ func _build_databases():
 				push_warning("Item '%s' has a null capability slot." % item.id)
 				continue
 
-			var cap_type = cap.get_script()
+			var cap_type: Script = cap.get_script()
 			if not capabilities_by_type.has(cap_type):
 				capabilities_by_type[cap_type] = {}
-
-			capabilities_by_type[cap_type][item.id] = cap
+			if not capabilities_by_type[cap_type].has(item.id):
+				# If this is the first capability of this type for this item, create a new array.
+				capabilities_by_type[cap_type][item.id] = []
+				
+			# Always append the capability to the array.
+			capabilities_by_type[cap_type][item.id].append(cap)
 
 	print("[ItemDatabase] Build complete. Registered %d items and %d capability types." % [items_by_id.size(), capabilities_by_type.size()])
 
@@ -214,12 +221,16 @@ func _save_catalogue_resource():
 func get_item_by_id(id: StringName) -> ItemResource:
 	return items_by_id.get(id, null)
 
-func get_capability_resource_for_item(item_id: StringName, capability_script: Script) -> ItemCapability:
+func get_capabilities_for_item(item_id: StringName, capability_script: Script) -> Array[ItemCapability]:
 	if capabilities_by_type.has(capability_script):
-		return capabilities_by_type[capability_script].get(item_id, null)
-	return null
-
+		return capabilities_by_type[capability_script].get(item_id, []) # Return array or empty array
+	return []
+	
 func get_all_items_with_capability(capability_class_name: Script) -> Dictionary:
 	return capabilities_by_type.get(capability_class_name, {})
 
+func get_handler_for_capability(capability_class_name:Script)-> CapabilityHandler:
+	if handler_registry.has(capability_class_name):
+		return handler_registry[capability_class_name]
+	return null
 #endregion
