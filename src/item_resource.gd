@@ -10,10 +10,18 @@ class_name ItemResource
 @export var capabilities: Array[ItemCapability]
 
 
-func get_capability(T_script: Script) -> ItemCapability:
+func get_first_capability_of_type(T_script: Script) -> ItemCapability:
 	for c in capabilities:
 		if c != null and c.get_script() == T_script:
 			return c
 	return null
 
-func has_capability(T_script): return get_capability(T_script) != null
+func get_all_capabilities_of_type(T_script: Script) -> Array[ItemCapability]:
+	var results: Array[ItemCapability] = []
+	for c in capabilities:
+		if c != null and c.get_script() == T_script:
+			results.append(c)
+	return results
+
+func has_capability_of_type(T_script: Script) -> bool:
+	return get_first_capability_of_type(T_script) != null 
